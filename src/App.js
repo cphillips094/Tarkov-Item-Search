@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.dark.css';
 import { Button, Divider, Layout, Row, Col, Typography } from 'antd';
 import ItemSearchInput from './ItemSearchInput'
 
