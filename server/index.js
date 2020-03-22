@@ -47,10 +47,21 @@ makeRequest = (item, onResult) => {
 
 const processHTML = html => {
 	const $ = cheerio.load(html);
+	const hideout = getHideoutData($);
 	const trading = getTradingData($);
 	const crafting = getCraftingData($);
 
-	return { trading, crafting };
+	return { hideout, trading, crafting };
+}
+
+const getHideoutData = $ => {
+	var hideoutRequirements = [];
+	const $hideoutHeader = $("h2:contains('Hideout')");
+	const $hideoutList = $hideoutHeader.next('ul');
+	$hideoutList.find('li').each((index, li) => {
+		hideoutRequirements.push($(li).text());
+	});
+	return hideoutRequirements;
 }
 
 const getTradingData = $ => {
