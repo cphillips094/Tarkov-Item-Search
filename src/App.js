@@ -40,29 +40,44 @@ const App = () => {
 					<div style={ { padding: "20px" } }>
 						<ItemSearchInput onSearch={ fetchData } />
 						<Divider/>
+						{	
+							questData.length + hideoutData.length > 0 &&
+							<Row gutter={ gutterSizes }>
+								<Col>
+									{
+										questData.length > 0 &&
+										<RequirementsList data = { questData } >
+											<QuestionCircleOutlined style={ iconStyle } />
+										</RequirementsList>
+									}
+									{
+										hideoutData.length > 0 &&
+										<RequirementsList data = { hideoutData } >
+											<HomeOutlined style={ iconStyle } />
+										</RequirementsList>
+									}
+								</Col>
+							</Row>
+						}
 						<Row gutter={ gutterSizes }>
-							<Col>
-								<RequirementsList data = { questData } >
-									<QuestionCircleOutlined style={ iconStyle } />
-								</RequirementsList>
-								<RequirementsList data = { hideoutData } >
-									<HomeOutlined style={ iconStyle } />
-								</RequirementsList>
-							</Col>
-						</Row>
-						<Row gutter={ gutterSizes }>
-							<Col span={12}>
-								<Typography.Title>
-									Trading
-								</Typography.Title>
-								<TradeTable tradeData = { tradingData } />
-							</Col>
-							<Col span={12}>
-								<Typography.Title>
-									Crafting
-								</Typography.Title>
-								<TradeTable tradeData = { craftingData } />
-							</Col>
+							{
+								tradingData.length > 0 &&
+								<Col span={ 12 }>
+									<Typography.Title>
+										Trading
+									</Typography.Title>
+									<TradeTable tradeData = { tradingData } />
+								</Col>
+							}
+							{
+								craftingData.length > 0 &&
+								<Col span={ 12 }>
+									<Typography.Title>
+										Crafting
+									</Typography.Title>
+									<TradeTable tradeData = { craftingData } />
+								</Col>
+							}
 						</Row>
 					</div>
 				</Content>
