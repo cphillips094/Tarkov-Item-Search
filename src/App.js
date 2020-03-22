@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'antd/dist/antd.dark.css';
 import { Button, Divider, Layout, Row, Col, Typography } from 'antd';
-import ItemSearchInput from './ItemSearchInput'
+import ItemSearchInput from './components/itemSearchInput';
 
 const App = () => {
 	const [tradingData, setTradingData] = useState("");
