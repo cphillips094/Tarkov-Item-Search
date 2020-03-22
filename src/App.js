@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import 'antd/dist/antd.dark.css';
 import { Divider, Layout, Row, Col, Typography } from 'antd';
+import HideoutRequirementsList from './components/hideoutRequirementsList';
 import ItemSearchInput from './components/itemSearchInput';
 import TradeTable from './components/tradeTable';
 
 const App = () => {
+	const [hideoutData, setHideoutData] = useState([]);
 	const [tradingData, setTradingData] = useState([]);
 	const [craftingData, setCraftingData] = useState([]);
 	const { Header, Content } = Layout;
@@ -14,6 +16,7 @@ const App = () => {
 			try {
 				const response = await fetch(`/api/search?item=${value.replace(/ /g, '_')}`);
 				const json = await response.json();
+				setHideoutData(json.hideout);
 				setTradingData(json.trading);
 				setCraftingData(json.crafting);
 			} catch(err) {
@@ -21,6 +24,8 @@ const App = () => {
 			}
 		})()
 	}
+
+	const gutterSizes = [ { xs: 8, sm: 16, md: 24, lg: 32 }, { xs: 8, sm: 16, md: 24, lg: 32 } ];
 
 	return (
 		<Layout>
@@ -31,7 +36,12 @@ const App = () => {
 					<div style={ { padding: "20px" } }>
 						<ItemSearchInput onSearch={ fetchData } />
 						<Divider/>
-						<Row gutter={ { xs: 8, sm: 16, md: 24, lg: 32 } }>
+						<Row gutter={ gutterSizes }>
+							<Col>
+								<HideoutRequirementsList hideoutData = { hideoutData } />
+							</Col>
+						</Row>
+						<Row gutter={ gutterSizes }>
 							<Col span={12}>
 								<Typography.Title>
 									Trading
