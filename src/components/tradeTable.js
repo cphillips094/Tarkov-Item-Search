@@ -9,13 +9,18 @@ const tradableList = tradableData => {
 			itemLayout="horizontal"
 			dataSource={ tradableData }
 			renderItem={ tradable => (
-				<List.Item>
+				<List.Item
+					extra={
+						<img
+							src={ tradable.imageURL }
+							alt={ tradable.name }
+							style={ { maxWidth: "50%" } }
+						/>
+					}
+				>
 					<List.Item.Meta
-						avatar={
-							<img src={ tradable.imageURL } />
-						}
 						title={ tradable.name }
-						description={ `x${tradable.quantity}` }
+						description={ tradable.quantity && `x${tradable.quantity}` }
 					/>
 				</List.Item>
 			)}
@@ -38,8 +43,9 @@ const TradeTable = ({ tradeData }) => {
 	const iconStyle = { fontSize: "24px"};
 
 	return tradeData.map((trade, index) => {
+		const requirements = trade.entity.requirements;
 		return (
-			<Card key={ index }>
+			<Card key={ index } style={ { margin: "20px auto" } }>
 				<Row>
 					<Col span={ 8 } style={ colStyle }>
 						{ tradableList(trade.required) }
@@ -55,10 +61,19 @@ const TradeTable = ({ tradeData }) => {
 						{
 							wrapInCenteredDiv(
 								<React.Fragment>
-									<img src={trade.entity.imageURL} />
+									<img
+										src={ trade.entity.imageURL }
+										alt={ trade.entity.name }
+									/>
 									<Typography.Title level={4}>
 										{ trade.entity.name }
 									</Typography.Title>
+									{
+										requirements &&
+										<p>
+											{ requirements }
+										</p>
+									}
 								</React.Fragment>
 							)
 						}
