@@ -61,10 +61,13 @@ const TradeTable = ({ tradeData }) => {
 						{
 							wrapInCenteredDiv(
 								<React.Fragment>
-									<img
-										src={ trade.entity.imageURL }
-										alt={ trade.entity.name }
-									/>
+									{
+										trade.entity.imageURL &&
+										<img
+											src={ trade.entity.imageURL }
+											alt={ trade.entity.name }
+										/>
+									}
 									<Typography.Title level={4}>
 										{ trade.entity.name }
 									</Typography.Title>

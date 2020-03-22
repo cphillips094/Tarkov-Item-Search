@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import 'antd/dist/antd.dark.css';
-import { Button, Divider, Layout, Row, Col, Typography } from 'antd';
+import { Divider, Layout, Row, Col, Typography } from 'antd';
 import ItemSearchInput from './components/itemSearchInput';
 import TradeTable from './components/tradeTable';
 
 const App = () => {
 	const [tradingData, setTradingData] = useState([]);
+	const [craftingData, setCraftingData] = useState([]);
 	const { Header, Content } = Layout;
 
 	const fetchData = value => {
@@ -14,6 +15,7 @@ const App = () => {
 				const response = await fetch(`/api/search?item=${value.replace(/ /g, '_')}`);
 				const json = await response.json();
 				setTradingData(json.trading);
+				setCraftingData(json.crafting);
 			} catch(err) {
 			alert("error: " + err);
 			}
@@ -40,6 +42,7 @@ const App = () => {
 								<Typography.Title>
 									Crafting
 								</Typography.Title>
+								<TradeTable tradeData = { craftingData } />
 							</Col>
 						</Row>
 					</div>

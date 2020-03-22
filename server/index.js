@@ -48,8 +48,9 @@ makeRequest = (item, onResult) => {
 const processHTML = html => {
 	const $ = cheerio.load(html);
 	const trading = getTradingData($);
+	const crafting = getCraftingData($);
 
-	return { trading: trading };
+	return { trading, crafting };
 }
 
 const getTradingData = $ => {
@@ -66,6 +67,22 @@ const getTradingData = $ => {
 		}
 	});
 	return trades;
+}
+
+const getCraftingData = $ => {
+	var crafting = [];
+	const $craftingHeader = $("h2:contains('Crafting')");
+	const $craftingTable = $craftingHeader.next('table');
+	$craftingTable.find('tr').each(function(index, row) {
+		const columns = $(row).find('th');
+		if (columns.length === 5) {
+			const required = createTradables($, $(columns[0]));
+			const entity = createEntity($, $(columns[2]));
+			const receivables = createTradables($, $(columns[4]));
+			crafting.push(new Trade(required, entity, receivables));
+		}
+	});
+	return crafting;
 }
 
 const createTradables = ($, $th) => {
@@ -97,19 +114,35 @@ const createEntity = ($, $th) => {
 	const firstAnchor = anchors[0];
 	if (firstAnchor) {
 		const $firstAnchor = $(firstAnchor);
-		name = $firstAnchor.attr('title');
+		const imageInAnchor = $firstAnchor.find('img');
+		if (imageInAnchor.length) {
+			name = $firstAnchor.attr('title');
+		} else {
+			name = $firstAnchor.text();
+		}
 
-		const itemImage = $firstAnchor.find('img')[0];
+		const itemImage = imageInAnchor[0];
 		imageURL = $(itemImage).attr('src');
 	}
 
-	const requirementsPrefix = ($th.text().match(/After.+task/) || [])[0];
+	const cellText = getCellText($th).trim();
+	const requirementsPrefix = (cellText.match(/After.+task/) || [])[0];
 	if (requirementsPrefix) {
 		const quest = $(anchors.slice(-1)[0]).attr('title');
 		requirements = `${requirementsPrefix} ${quest}`;
+	} else if (cellText) {
+		requirements = cellText;
 	}
 
 	return new Entity(name, requirements, imageURL);
+}
+
+const getCellText = ($th) => {
+	return $th.clone()	//clone the element
+		.children()		//select all the children
+		.remove()		//remove all the children
+		.end()			//again go back to selected element
+		.text();
 }
 
 app.listen(3001, () =>
