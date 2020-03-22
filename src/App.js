@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import 'antd/dist/antd.dark.css';
 import { Button, Divider, Layout, Row, Col, Typography } from 'antd';
 import ItemSearchInput from './components/itemSearchInput';
+import TradeTable from './components/tradeTable';
 
 const App = () => {
-	const [tradingData, setTradingData] = useState("");
-	const { Header, Footer, Sider, Content } = Layout;
+	const [tradingData, setTradingData] = useState([]);
+	const { Header, Content } = Layout;
 
 	const fetchData = value => {
 		(async () => {
@@ -22,65 +23,28 @@ const App = () => {
 	return (
 		<Layout>
 			<Header>Tarkov Item Search</Header>
-		<Layout>
-			{/* <Sider>Sider</Sider> */}
-			<Content>
-				<div style={ { padding: "20px" } }>
-					<ItemSearchInput onSearch={ fetchData } />
-					<Divider/>
-					<Row>
-						<Col span={12}>
-							<Typography.Title>
-								Trading
-							</Typography.Title>
-							<table>
-							<tr>
-								<th>
-									Required
-								</th>
-								<th>
-									Trader
-								</th>
-								<th>
-									Receive
-								</th>
-							</tr>
-							{
-								tradingData.length > 0 && tradingData.map(function(trade, index) {
-									return <tr>
-										<td>
-											{
-											trade.required.map(function(req, index) {
-												return `${req.name} x${req.quantity}, `;
-											})
-											}
-										</td>
-										<td>
-											{
-											trade.entity.name + ", "
-											}
-										</td>
-										<td>
-											{
-											trade.receivables.map(function(rec, index) {
-												return `${rec.name} x${rec.quantity}`;
-											})
-											}
-										</td>
-									</tr>;
-								})
-							}
-							</table>
-						</Col>
-						<Col span={12}>
-							<Typography.Title>
-							Crafting
-							</Typography.Title>
-						</Col>
-					</Row>
-				</div>
-			</Content>
-		</Layout>
+			<Layout>
+				{/* <Sider>Sider</Sider> */}
+				<Content>
+					<div style={ { padding: "20px" } }>
+						<ItemSearchInput onSearch={ fetchData } />
+						<Divider/>
+						<Row gutter={ { xs: 8, sm: 16, md: 24, lg: 32 } }>
+							<Col span={12}>
+								<Typography.Title>
+									Trading
+								</Typography.Title>
+								<TradeTable tradeData = { tradingData } />
+							</Col>
+							<Col span={12}>
+								<Typography.Title>
+									Crafting
+								</Typography.Title>
+							</Col>
+						</Row>
+					</div>
+				</Content>
+			</Layout>
 			{/* <Footer>Footer</Footer> */}
 		</Layout>
 	);
