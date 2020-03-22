@@ -1,7 +1,8 @@
 class Entity {
-	constructor(name, requirements) {
+	constructor(name, requirements, imageURL) {
 		this.name = name;
 		this.requirements = requirements;
+		this.imageURL = imageURL;
 	}
 }
 
