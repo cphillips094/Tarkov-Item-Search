@@ -8,7 +8,7 @@ const ItemSearchInput = ({ handleSearch }) => {
 			try {
 				const response = await fetch('/api/search');
 				const items = await response.json();
-				setItemList(items.map((item, index) => { return { key: index, value: item } }));
+				setItemList(items.sort().map((item, index) => { return { key: index, value: item } }));
 			} catch(err) {
 				alert("error: " + err);
 			}
