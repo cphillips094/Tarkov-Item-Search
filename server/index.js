@@ -130,7 +130,7 @@ const createTradables = ($, $th) => {
 	
 	const items = $th.html().split('+');
 	items.forEach(itemHtml => {
-		const firstAnchor = $(itemHtml).closest('a')[0];
+		const firstAnchor = $(itemHtml).closest('a[href]')[0];
 		if (firstAnchor) {
 			const $firstAnchor = $(firstAnchor);
 			const name = $firstAnchor.attr('title');
