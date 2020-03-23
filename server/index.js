@@ -3,46 +3,22 @@ const cheerio = require('cheerio');
 const Trade = require('./tradeObjects/Trade');
 const Tradable = require('./tradeObjects/Tradable');
 const Entity = require('./tradeObjects/Entity');
+const axios = require('axios');
+const asyncHandler = require('express-async-handler');
 
 const app = express();
-
 const baseURL = "escapefromtarkov.gamepedia.com";
 
-app.get('/api/search', (req, res) => {
+app.get('/api/search', asyncHandler(async (req, res) => {
 	res.setHeader('Content-Type', 'application/json');
-	makeRequest(req.query.item, (statusCode, result) => {
-		res.statusCode = statusCode;
-		res.send(processHTML(result));
-	});
-});
+	const response = await makeRequest(req.query.item);
+	const html = response.data;
+	res.statusCode = response.status;
+	res.send(processHTML(html));
+}));
 
-makeRequest = (item, onResult) => {
-	let output = '';
-	const https = require('https')
-	const options = {
-		host: baseURL,
-		port: 443,
-		path: `/${item}`,
-		method: 'GET',
-	}
-
-	const req = https.request(options, res => {
-		console.log(`${options.host} : ${res.statusCode}`);
-		res.setEncoding('utf8');
-
-		res.on('data', d => {
-			output += d;
-		});
-		res.on('end', () => {
-			onResult(res.statusCode, output);
-		});
-	});
-
-	req.on('error', error => {
-		console.error(error)
-	});
-
-	req.end();
+const makeRequest = item => {
+	return axios.get(`https://${baseURL}/${item}`);
 }
 
 const processHTML = html => {
