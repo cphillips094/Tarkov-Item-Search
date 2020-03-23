@@ -9,6 +9,7 @@
 		"@testing-library/user-event": "^7.2.1",
 		"antd": "^4.0.2",
 		"cheerio": "^1.0.0-rc.3",
+		"express-async-handler": "^1.1.4",
 		"react": "^16.13.0",
 		"react-dom": "^16.13.0",
 		"react-scripts": "3.4.0"
@@ -26,14 +27,14 @@
 	},
 	"browserslist": {
 		"production": [
-		">0.2%",
-		"not dead",
-		"not op_mini all"
+			">0.2%",
+			"not dead",
+			"not op_mini all"
 		],
 		"development": [
-		"last 1 chrome version",
-		"last 1 firefox version",
-		"last 1 safari version"
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
 		]
 	},
 	"devDependencies": {
