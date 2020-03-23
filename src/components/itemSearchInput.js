@@ -1,22 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AutoComplete, Input } from 'antd';
 
 const ItemSearchInput = ({ onSearch }) => {
-	const options = [
-		{ value: 'Folder with intelligence' },
-	];
-	
-	const onSelect = value => {
-		console.log('onSelect', value);
-	};
+	const [itemList, setItemList] = useState([]);
+	const fetchTest = () => {
+		(async () => {
+			try {
+				const response = await fetch('/api/search');
+				const items = await response.json();
+				setItemList(items.map((item, index) => { return { key: index, value: item } }));
+			} catch(err) {
+				alert("error: " + err);
+			}
+		})()
+	}
+	useEffect(fetchTest, []);
 
+	const filterFunction = (inputValue, option) => option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1;
 	return (
 		<AutoComplete
-			options={ options }
-			filterOption={
-				(inputValue, option) => option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
-			}
-			onSelect={ onSelect }
+			options={ itemList }
+			filterOption={ filterFunction }
+			onSelect={ onSearch }
 		>
 			<Input.Search
 				size="large"

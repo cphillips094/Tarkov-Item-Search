@@ -16,14 +16,14 @@ const App = () => {
 	const fetchData = value => {
 		(async () => {
 			try {
-				const response = await fetch(`/api/search?item=${value.replace(/ /g, '_')}`);
+				const response = await fetch(`/api/search/${value.replace(/ /g, '_')}`);
 				const json = await response.json();
 				setQuestData(json.quest);
 				setHideoutData(json.hideout);
 				setTradingData(json.trading);
 				setCraftingData(json.crafting);
 			} catch(err) {
-			alert("error: " + err);
+				alert("error: " + err);
 			}
 		})()
 	}

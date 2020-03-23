@@ -11,7 +11,16 @@ const baseURL = "escapefromtarkov.gamepedia.com";
 
 app.get('/api/search', asyncHandler(async (req, res) => {
 	res.setHeader('Content-Type', 'application/json');
-	const response = await makeRequest(req.query.item);
+	const homepageRequestResult = await makeRequest('Escape_from_Tarkov_Wiki');
+	const homepageHtml = homepageRequestResult.data;
+	const categoryURLs = getCategoryURLs(homepageHtml);
+	const result = await getItemNames(categoryURLs);
+	res.send(result);
+}));
+
+app.get('/api/search/:item', asyncHandler(async (req, res) => {
+	res.setHeader('Content-Type', 'application/json');
+	const response = await makeRequest(req.params.item);
 	const html = response.data;
 	res.statusCode = response.status;
 	res.send(processHTML(html));
@@ -19,6 +28,49 @@ app.get('/api/search', asyncHandler(async (req, res) => {
 
 const makeRequest = item => {
 	return axios.get(`https://${baseURL}/${item}`);
+}
+
+const getCategoryURLs = html => {
+	var categoryURLs = [];
+	const $ = cheerio.load(html);
+	categoryURLs = categoryURLs.concat(getCategoryList($, 'Gear'));
+	categoryURLs = categoryURLs.concat(getCategoryList($, 'Items'));
+	return categoryURLs;
+}
+
+const getCategoryList = ($, headerTitle) => {
+	const categoryURLs = [];
+	const $header = $(`h3:contains('${headerTitle}')`);
+	const $div = $header.next('div.body');
+	const $list = $div.find('ul');
+	$list.find('li').each((index, li) => {
+		categoryURLs.push($(li).find('a').attr('href'));
+	});
+	return categoryURLs;
+}
+
+const getItemNames = async categoryURLs => {
+	var itemNames = [];
+	for (const categoryURL of categoryURLs) {
+		const categoryPageRequest = await makeRequest(categoryURL.substring(1));
+		itemNames = itemNames.concat(scanCategoryTables(categoryPageRequest.data));
+	}
+	return itemNames;
+}
+
+const scanCategoryTables = html => {
+	var itemNames = [];
+	const $ = cheerio.load(html);
+	const $tables = $('table.wikitable');
+	$tables.each((index, table) => {
+		const $table = $(table);
+		const nameColumnIndex = $table.find("th:contains('Name')").index();
+		$table.find('tr').slice(1).each((index, tr) => {
+			const cells = $(tr).children();
+			itemNames.push($(cells[nameColumnIndex]).text().trim());
+		});
+	});
+	return itemNames;
 }
 
 const processHTML = html => {
