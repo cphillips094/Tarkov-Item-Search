@@ -62,15 +62,26 @@ const scanCategoryTables = html => {
 	var itemNames = [];
 	const $ = cheerio.load(html);
 	const $tables = $('table.wikitable');
+	let tableValid = true;
 	$tables.each((index, table) => {
 		const $table = $(table);
-		const nameColumnIndex = $table.find("th:contains('Name')").index();
-		$table.find('tr').slice(1).each((index, tr) => {
-			const cells = $(tr).children();
-			itemNames.push($(cells[nameColumnIndex]).text().trim());
-		});
+		tableValid = tableValid && notUpcomingTable($table);
+		if (tableValid) {
+			const nameColumnIndex = $table.find("th:contains('Name')").index();
+			if (nameColumnIndex >= 0) {
+				$table.find('tr').slice(1).each((index, tr) => {
+					const cells = $(tr).children();
+					const itemName = $(cells[nameColumnIndex]).text().trim();
+					itemNames.push(itemName);
+				});
+			}
+		}
 	});
 	return itemNames;
+}
+
+const notUpcomingTable = $table => {
+	return $table.prevAll("h2:contains('Upcoming')").length === 0;
 }
 
 const processHTML = html => {
