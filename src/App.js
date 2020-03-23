@@ -13,7 +13,7 @@ const App = () => {
 	const [craftingData, setCraftingData] = useState([]);
 	const { Header, Content } = Layout;
 
-	const fetchData = value => {
+	const fetchItemData = value => {
 		(async () => {
 			try {
 				const response = await fetch(`/api/search/${value.replace(/ /g, '_')}`);
@@ -38,7 +38,7 @@ const App = () => {
 				{/* <Sider>Sider</Sider> */}
 				<Content>
 					<div style={ { padding: "20px" } }>
-						<ItemSearchInput onSearch={ fetchData } />
+						<ItemSearchInput handleSearch={ fetchItemData } />
 						<Divider/>
 						{	
 							questData.length + hideoutData.length > 0 &&

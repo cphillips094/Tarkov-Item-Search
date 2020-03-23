@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AutoComplete, Input } from 'antd';
 
-const ItemSearchInput = ({ onSearch }) => {
+const ItemSearchInput = ({ handleSearch }) => {
 	const [itemList, setItemList] = useState([]);
 	const fetchTest = () => {
 		(async () => {
@@ -21,13 +21,13 @@ const ItemSearchInput = ({ onSearch }) => {
 		<AutoComplete
 			options={ itemList }
 			filterOption={ filterFunction }
-			onSelect={ onSearch }
+			onSelect={ handleSearch }
 		>
 			<Input.Search
 				size="large"
 				placeholder="Search for Item"
 				enterButton
-				onSearch={ onSearch }
+				onSearch={ handleSearch }
 			/>
 		</AutoComplete>
 	);
