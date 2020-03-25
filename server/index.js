@@ -160,26 +160,52 @@ const getCraftingData = $ => {
 }
 
 const createTradables = ($, $th) => {
-	var required = [];
-	
-	const items = $th.html().split('+');
-	items.forEach(itemHtml => {
-		const firstAnchor = $(itemHtml).closest('a[href]')[0];
-		if (firstAnchor) {
-			const $firstAnchor = $(firstAnchor);
-			const name = $firstAnchor.attr('title');
-
-			const quantityText = $(firstAnchor.nextSibling).text();
-			const quantity = (quantityText.match(/x(\d+)/) || [])[1];
-			
-			const itemImage = $firstAnchor.find('img')[0];
-			const imageURL = $(itemImage).attr('src');
-			
-			required.push(new Tradable(name, quantity, imageURL));
+	let required = [];
+	const anchors = $th.find('a');
+	for (let i = 0; i < anchors.length; i++) {
+		const $firstAnchor = $(anchors[i]);
+		let $secondAnchor;
+		if (isImgAnchor($firstAnchor) !== isImgAnchor($(anchors[i + 1]))) {
+			$secondAnchor = $(anchors[++i]);
 		}
-	});
+		required.push(extractDataFromAnchorPair($, $firstAnchor, $secondAnchor));
+	}
 
 	return required;
+}
+
+const isImgAnchor = $a => {
+	return $a.children('img').length > 0;
+}
+
+const extractDataFromAnchorPair = ($, $firstAnchor, $secondAnchor) => {
+	let name, quantity, imageURL;
+	if (isImgAnchor($firstAnchor)) {
+		[ quantity, imageURL ] = extractImageAnchorData($, $firstAnchor);
+	} else {
+		name = $firstAnchor.text().trim();
+	}
+
+	if ($secondAnchor) {
+		if (isImgAnchor($secondAnchor)) {
+			[ quantity, imageURL ] = extractImageAnchorData($, $secondAnchor);
+		} else {
+			name = $secondAnchor.text().trim();
+		}
+	}
+
+	return new Tradable(name, quantity, imageURL);
+}
+
+const extractImageAnchorData = ($, $anchor) => {
+	let quantity, imageURL;
+	quantityText = $($anchor[0].nextSibling).text();
+	quantity = (quantityText.match(/x(\d+)/) || [])[1];
+
+	const itemImage = $anchor.find('img')[0];
+	imageURL = $(itemImage).attr('src');
+
+	return [ quantity, imageURL ];
 }
 
 const createEntity = ($, $th) => {
