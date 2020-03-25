@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Popover, Typography, Button } from 'antd';
-import { SearchOutlined, CheckOutlined, CloseOutlined  } from '@ant-design/icons';
+import { Popover, Typography, Button, message } from 'antd';
+import { SearchOutlined, CheckOutlined, CheckCircleOutlined, CloseOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 const TradablePopover = props => {
 	const {
@@ -14,6 +14,7 @@ const TradablePopover = props => {
 	const isItemName = tradableName === itemName;
 	const isFavorite = favorites.includes(tradableName);
 	const tradableTextStyle = isFavorite ? { color: 'orange' } : {};
+	const messageIconStyle = { color: 'orange' };
 	
 	return (
 		<Popover
@@ -36,6 +37,11 @@ const TradablePopover = props => {
 						onClick={ () => {
 							setPopoverVisible(false);
 							handleAddRemoveFavoriteClick(tradableName);
+							message.open({
+								key: 'favorite-message',
+								content: isFavorite ? 'Removed from favorites' : 'Added to favorites',
+								icon: isFavorite ? <CloseCircleOutlined style={ messageIconStyle }/> : <CheckCircleOutlined style={ messageIconStyle }/>,
+							});
 						}}
 						style={ isItemName ? {} : { marginLeft: '10px' } }
 					/>
