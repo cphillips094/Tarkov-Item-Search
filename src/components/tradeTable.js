@@ -2,32 +2,6 @@ import React from 'react';
 import { Row, Col, Card, List, Typography } from 'antd';
 import { ArrowRightOutlined } from '@ant-design/icons';
 
-const tradableList = tradableData => {
-	return (
-		<List
-			bordered
-			itemLayout="horizontal"
-			dataSource={ tradableData }
-			renderItem={ tradable => (
-				<List.Item
-					extra={
-						<img
-							src={ tradable.imageURL }
-							alt={ tradable.name }
-							style={ { maxWidth: "50%" } }
-						/>
-					}
-				>
-					<List.Item.Meta
-						title={ tradable.name }
-						description={ tradable.quantity && `x${tradable.quantity}` }
-					/>
-				</List.Item>
-			)}
-		/>
-	);
-}
-
 const wrapInCenteredDiv = jsx => {
 	return (
 		<div style={ { textAlign: "center" } }>
@@ -38,7 +12,44 @@ const wrapInCenteredDiv = jsx => {
 	);
 }
 
-const TradeTable = ({ tradeData }) => {
+const TradeTable = ({ tradeData, favorites, handleItemClick }) => {
+	const tradableList = tradableData => {
+		return (
+			<List
+				bordered
+				itemLayout="horizontal"
+				dataSource={ tradableData }
+				renderItem={ tradable => (
+					<List.Item
+						extra={
+							<img
+								src={ tradable.imageURL }
+								alt={ tradable.name }
+								style={ { maxWidth: "50%" } }
+							/>
+						}
+					>
+						<List.Item.Meta
+							title={
+								<a
+									href="/"
+									onClick={ e => {
+										e.preventDefault();
+										handleItemClick(tradable.name);
+									}}
+								>
+									<Typography.Text strong style={ favorites.includes(tradable.name) ? { color: 'orange' } : {} }>
+										{ tradable.name }
+									</Typography.Text>
+								</a>
+							}
+							description={ tradable.quantity && `x${tradable.quantity}` }
+						/>
+					</List.Item>
+				)}
+			/>
+		);
+	}
 	const colStyle = { margin: "auto" };
 	const iconStyle = { fontSize: "24px"};
 

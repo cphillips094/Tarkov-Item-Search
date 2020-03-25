@@ -7,7 +7,16 @@ import { QuestionCircleOutlined, HomeOutlined } from '@ant-design/icons';
 const gutterSizes = [ { xs: 8, sm: 16, md: 24, lg: 32 }, { xs: 8, sm: 16, md: 24, lg: 32 } ];
 const iconStyle = { fontSize: '24px', marginRight: '10px' };
 
-const ItemData = ({ itemName, questData, hideoutData, tradingData, craftingData }) => {
+const ItemData = (props) => {
+	const {
+		itemName,
+		questData,
+		hideoutData,
+		tradingData,
+		craftingData,
+		favorites,
+		handleItemClick,
+	} = props;
 	let hasListData = questData.concat(hideoutData).length > 0;
 	let hasTableData = tradingData.concat(craftingData).length > 0;
 	let hasData = hasListData || hasTableData;
@@ -42,7 +51,11 @@ const ItemData = ({ itemName, questData, hideoutData, tradingData, craftingData 
 						<Typography.Title>
 							Trading
 						</Typography.Title>
-						<TradeTable tradeData = { tradingData } />
+						<TradeTable
+							tradeData={ tradingData }
+							favorites={ favorites }
+							handleItemClick={ handleItemClick }
+						/>
 					</Col>
 				}
 				{
@@ -51,7 +64,11 @@ const ItemData = ({ itemName, questData, hideoutData, tradingData, craftingData 
 						<Typography.Title>
 							Crafting
 						</Typography.Title>
-						<TradeTable tradeData = { craftingData } />
+						<TradeTable
+							tradeData={ craftingData }
+							favorites={ favorites }
+							handleItemClick={ handleItemClick }
+						/>
 					</Col>
 				}
 			</Row>
