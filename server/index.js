@@ -14,17 +14,27 @@ app.get('/api/search', asyncHandler(async (req, res) => {
 	const homepageRequestResult = await makeRequest('Escape_from_Tarkov_Wiki');
 	const homepageHtml = homepageRequestResult.data;
 	const categoryURLs = getCategoryURLs(homepageHtml);
-	const result = await getItemNames(categoryURLs);
-	res.send(result);
+	const itemNames = await getItemNames(categoryURLs);
+	res.status(200).send({ items: itemNames });
 }));
 
 app.get('/api/search/:item', asyncHandler(async (req, res) => {
 	res.setHeader('Content-Type', 'application/json');
-	const response = await makeRequest(req.params.item);
-	const html = response.data;
-	res.statusCode = response.status;
-	res.send(processHTML(html));
+	const itemPageResponse = await makeRequest(req.params.item);
+	const itemPageHTML = itemPageResponse.data;
+	const itemData = processHTML(itemPageHTML);
+	res.status(200).send(itemData);
 }));
+
+app.use(function(error, req, res, next) {
+	if (error.response) {
+		console.info(`${error.request.method} request to ${error.request.path} resulted in a ${error.response.status}`)
+		res.status(200).json({ quest: [], hideout: [], trading: [], crafting: [] });
+	} else {
+		console.error(error.stack);
+		res.status(500).send({ message: 'An error occurred' })
+	}
+});
 
 const makeRequest = item => {
 	return axios.get(`https://${baseURL}/${item}`);

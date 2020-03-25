@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import 'antd/dist/antd.dark.css';
-import { Divider, Layout, Row, Col, Affix, Button } from 'antd';
+import { Divider, Layout, Row, Col, Affix, Button, message } from 'antd';
 import ItemSearchInput from './components/itemSearchInput';
 import FavoritesDrawer from './components/favoritesDrawer';
 import SearchForItemPlaceholder from './components/searchForItemPlaceholder';
@@ -25,13 +25,16 @@ const App = () => {
 					setMakingRequest(true);
 					const response = await fetch(`/api/search/${value.replace(/ /g, '_')}`);
 					const json = await response.json();
+					if (!response.ok) {
+						throw json.message || 'Something went wrong';
+					}
 					setQuestData(json.quest);
 					setHideoutData(json.hideout);
 					setTradingData(json.trading);
 					setCraftingData(json.crafting);
-				} catch(err) {
-					alert("error: " + err);
-				} finally{
+				} catch (error) {
+					message.error(error, 10);
+				} finally {
 					setRequestMade(true);
 					setMakingRequest(false);
 				}
