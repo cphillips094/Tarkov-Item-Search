@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col, Card, List, Typography } from 'antd';
+import TradablePopover from './tradablePopover';
 import { ArrowRightOutlined } from '@ant-design/icons';
 
 const wrapInCenteredDiv = jsx => {
@@ -12,7 +13,14 @@ const wrapInCenteredDiv = jsx => {
 	);
 }
 
-const TradeTable = ({ tradeData, favorites, handleItemClick }) => {
+const TradeTable = props => {
+	const {
+		itemName,
+		tradeData,
+		favorites,
+		handleSearchClick,
+		handleAddRemoveFavoriteClick
+	} = props;
 	const tradableList = tradableData => {
 		return (
 			<List
@@ -31,17 +39,13 @@ const TradeTable = ({ tradeData, favorites, handleItemClick }) => {
 					>
 						<List.Item.Meta
 							title={
-								<a
-									href="/"
-									onClick={ e => {
-										e.preventDefault();
-										handleItemClick(tradable.name);
-									}}
-								>
-									<Typography.Text strong style={ favorites.includes(tradable.name) ? { color: 'orange' } : {} }>
-										{ tradable.name }
-									</Typography.Text>
-								</a>
+								<TradablePopover
+									itemName={ itemName }
+									tradableName={ tradable.name }
+									favorites={ favorites }
+									handleSearchClick={ handleSearchClick }
+									handleAddRemoveFavoriteClick={ handleAddRemoveFavoriteClick }
+								/>
 							}
 							description={ tradable.quantity && `x${tradable.quantity}` }
 						/>

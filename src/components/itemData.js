@@ -15,7 +15,8 @@ const ItemData = (props) => {
 		tradingData,
 		craftingData,
 		favorites,
-		handleItemClick,
+		handleSearchClick,
+		handleAddRemoveFavoriteClick,
 	} = props;
 	let hasListData = questData.concat(hideoutData).length > 0;
 	let hasTableData = tradingData.concat(craftingData).length > 0;
@@ -52,9 +53,11 @@ const ItemData = (props) => {
 							Trading
 						</Typography.Title>
 						<TradeTable
+							itemName={ itemName }
 							tradeData={ tradingData }
 							favorites={ favorites }
-							handleItemClick={ handleItemClick }
+							handleSearchClick={ handleSearchClick }
+							handleAddRemoveFavoriteClick={ handleAddRemoveFavoriteClick }
 						/>
 					</Col>
 				}
@@ -65,9 +68,11 @@ const ItemData = (props) => {
 							Crafting
 						</Typography.Title>
 						<TradeTable
+							itemName={ itemName }
 							tradeData={ craftingData }
 							favorites={ favorites }
-							handleItemClick={ handleItemClick }
+							handleSearchClick={ handleSearchClick }
+							handleAddRemoveFavoriteClick={ handleAddRemoveFavoriteClick }
 						/>
 					</Col>
 				}

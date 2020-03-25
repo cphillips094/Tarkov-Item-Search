@@ -46,12 +46,17 @@ const App = () => {
 		}
 	}
 
-	const handleTradableClick = value => {
+	const handleAddRemoveFavoriteClick = value => {
 		if (favorites.includes(value)) {
 			setFavorites(favorites.filter(arrValue => arrValue !== value).sort());
 		} else {
 			setFavorites(favorites.concat(value).sort());
 		}
+	}
+
+	const handleSearchClick = value => {
+		setItemName(value);
+		fetchItemData(value);
 	}
 
 	const handleFavoriteClick = value => {
@@ -93,7 +98,7 @@ const App = () => {
 									drawerVisible={ drawerVisible }
 									handleClose={ setDrawerVisible }
 									handleFavoriteClick={ handleFavoriteClick }
-									handleRemove={ handleTradableClick }
+									handleRemove={ handleAddRemoveFavoriteClick }
 								/>
 							</Col>
 						</Row>
@@ -108,7 +113,8 @@ const App = () => {
 									tradingData={ tradingData }
 									craftingData={ craftingData }
 									favorites={ favorites }
-									handleItemClick={ handleTradableClick }
+									handleSearchClick={ handleSearchClick }
+									handleAddRemoveFavoriteClick={ handleAddRemoveFavoriteClick }
 								/>
 							) ||
 							<SearchForItemPlaceholder/>
