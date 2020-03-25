@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col, Typography } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 
 const SearchForItemPlaceholder = () => {
 	return (
@@ -8,7 +9,7 @@ const SearchForItemPlaceholder = () => {
 				<div style={ { textAlign: "center" } }>
 					<div style={ { display: "inline-block" } }>
 						<Typography.Text type="secondary">
-							Search for an item to get data
+							<SearchOutlined /> Search for an item to get data
 						</Typography.Text>
 					</div>
 				</div>
