@@ -44,16 +44,39 @@ const getCategoryList = ($, headerTitle) => {
 	const $div = $header.next('div.body');
 	const $list = $div.find('ul');
 	$list.find('li').each((index, li) => {
-		categoryURLs.push($(li).find('a').attr('href'));
+		categoryURLs.push($(li).find('a').attr('href').substring(1));
 	});
 	return categoryURLs;
 }
 
 const getItemNames = async categoryURLs => {
 	var itemNames = [];
+	const specialCases = getItemCategorySpecialCases();
 	for (const categoryURL of categoryURLs) {
-		const categoryPageRequest = await makeRequest(categoryURL.substring(1));
-		itemNames = itemNames.concat(scanCategoryTables(categoryPageRequest.data));
+		const specialCaseFunction = specialCases[categoryURL];
+		if (specialCaseFunction) {
+			itemNames = itemNames.concat(await specialCaseFunction(categoryURL));
+		} else {
+			const categoryPageRequest = await makeRequest(categoryURL);
+			itemNames = itemNames.concat(scanCategoryTables(categoryPageRequest.data));
+		}
+	}
+	return itemNames;
+}
+
+const getItemCategorySpecialCases = () => {
+	const specialCases = [];
+	specialCases['Ammunition'] = handleAmmunitionCategory;
+	return specialCases;
+}
+
+const handleAmmunitionCategory = async categoryURL => {
+	let itemNames = [];
+	const ammoCategoryPageRequest = await makeRequest(categoryURL);
+	const ammoPageURLs = scanCategoryTables(ammoCategoryPageRequest.data);
+	for (const ammoPageURL of ammoPageURLs) {
+		const ammoPageRequest = await makeRequest(ammoPageURL);
+		itemNames = itemNames.concat(scanCategoryTables(ammoPageRequest.data));
 	}
 	return itemNames;
 }
