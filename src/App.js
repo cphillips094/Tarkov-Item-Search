@@ -70,61 +70,58 @@ const App = () => {
 
 	return (
 		<Layout>
-			{/* <Header>Tarkov Item Search</Header> */}
-			<Layout>
-				<Layout.Content>
-					<div style={ { padding: '20px',  minHeight: '800px' } }>
-						<Row>
-							<Col span={ 16 }>
-								<ItemSearchInput
-									handleSearch={ fetchItemData }
-									handleChange={ handleChange }
-									searching={ makingRequest }
-									itemName={ itemName }
+			<Layout.Content>
+				<div style={ { padding: '20px',  minHeight: '800px' } }>
+					<Row>
+						<Col span={ 16 }>
+							<ItemSearchInput
+								handleSearch={ fetchItemData }
+								handleChange={ handleChange }
+								searching={ makingRequest }
+								itemName={ itemName }
+							/>
+						</Col>
+						<Col span={ 8 }>
+							<Affix offsetTop={ 20 }>
+								<Button
+									type='primary'
+									shape='circle'
+									icon={
+										<LeftOutlined />
+									}
+									size='large'
+									onClick={ () => setDrawerVisible(!drawerVisible) }
+									style={ { float: 'right', marginRight: '20px' } }
 								/>
-							</Col>
-							<Col span={ 8 }>
-								<Affix offsetTop={ 20 }>
-									<Button
-										type='primary'
-										shape='circle'
-										icon={
-											<LeftOutlined />
-										}
-										size='large'
-										onClick={ () => setDrawerVisible(!drawerVisible) }
-										style={ { float: 'right', marginRight: '20px' } }
-									/>
-								</Affix>	
-								<FavoritesDrawer
-									favorites={ favorites }
-									drawerVisible={ drawerVisible }
-									handleClose={ setDrawerVisible }
-									handleFavoriteClick={ handleFavoriteClick }
-									handleRemove={ handleAddRemoveFavoriteClick }
-								/>
-							</Col>
-						</Row>
-						<Divider/>
-						{
-							(
-								requestMade &&
-								<ItemData
-									itemName={ itemName }
-									questData={ questData }
-									hideoutData={ hideoutData }
-									tradingData={ tradingData }
-									craftingData={ craftingData }
-									favorites={ favorites }
-									handleSearchClick={ handleSearchClick }
-									handleAddRemoveFavoriteClick={ handleAddRemoveFavoriteClick }
-								/>
-							) ||
-							<SearchForItemPlaceholder/>
-						}
-					</div>
-				</Layout.Content>
-			</Layout>
+							</Affix>	
+							<FavoritesDrawer
+								favorites={ favorites }
+								drawerVisible={ drawerVisible }
+								handleClose={ setDrawerVisible }
+								handleFavoriteClick={ handleFavoriteClick }
+								handleRemove={ handleAddRemoveFavoriteClick }
+							/>
+						</Col>
+					</Row>
+					<Divider/>
+					{
+						(
+							requestMade &&
+							<ItemData
+								itemName={ itemName }
+								questData={ questData }
+								hideoutData={ hideoutData }
+								tradingData={ tradingData }
+								craftingData={ craftingData }
+								favorites={ favorites }
+								handleSearchClick={ handleSearchClick }
+								handleAddRemoveFavoriteClick={ handleAddRemoveFavoriteClick }
+							/>
+						) ||
+						<SearchForItemPlaceholder/>
+					}
+				</div>
+			</Layout.Content>
 		</Layout>
 	);
 }
