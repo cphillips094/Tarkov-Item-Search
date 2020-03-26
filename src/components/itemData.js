@@ -2,10 +2,8 @@ import React from 'react';
 import { Row, Col, Typography, Empty } from 'antd';
 import RequirementsList from './requirementsList';
 import TradeTable from './tradeTable';
-import { QuestionCircleOutlined, HomeOutlined } from '@ant-design/icons';
 
 const gutterSizes = [ { xs: 8, sm: 16, md: 24, lg: 32 }, { xs: 8, sm: 16, md: 24, lg: 32 } ];
-const iconStyle = { fontSize: '24px', marginRight: '10px' };
 
 const ItemData = (props) => {
 	const {
@@ -26,18 +24,10 @@ const ItemData = (props) => {
 		return (
 			<Row gutter={ gutterSizes }>
 				<Col>
-					{
-						questData.length > 0 &&
-						<RequirementsList data = { questData } >
-							<QuestionCircleOutlined style={ iconStyle } />
-						</RequirementsList>
-					}
-					{
-						hideoutData.length > 0 &&
-						<RequirementsList data = { hideoutData } >
-							<HomeOutlined style={ iconStyle } />
-						</RequirementsList>
-					}
+					<RequirementsList
+						questData={ questData }
+						hideoutData={ hideoutData }
+					/>
 				</Col>
 			</Row>
 		);
