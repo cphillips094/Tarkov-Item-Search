@@ -26,7 +26,7 @@ app.get('/api/search/:item', asyncHandler(async (req, res) => {
 	res.status(200).send(itemData);
 }));
 
-app.use(function(error, req, res, next) {
+app.use((error, req, res, next) => {
 	if (error.response) {
 		console.info(`${error.request.method} request to ${error.request.path} resulted in a ${error.response.status}`)
 		res.status(200).json({ quest: [], hideout: [], trading: [], crafting: [] });
