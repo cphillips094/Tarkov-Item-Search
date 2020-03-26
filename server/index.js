@@ -1,10 +1,10 @@
 const express = require('express');
 const cheerio = require('cheerio');
+const axios = require('axios');
+const asyncHandler = require('express-async-handler');
 const Trade = require('./tradeObjects/Trade');
 const Tradable = require('./tradeObjects/Tradable');
 const Entity = require('./tradeObjects/Entity');
-const axios = require('axios');
-const asyncHandler = require('express-async-handler');
 
 const app = express();
 const baseURL = "escapefromtarkov.gamepedia.com";
