@@ -52,7 +52,9 @@ const TradablePopover = props => {
 			onVisibleChange={ setPopoverVisible }
 		>
 			<div style={ { paddingRight: '5px' } }>
-				<Typography.Text strong style={ { cursor: 'pointer', ...tradableTextStyle } }>
+				<Typography.Text
+					strong={ true }
+					style={ { cursor: 'pointer', ...tradableTextStyle } }>
 					{ tradableName }
 				</Typography.Text>
 			</div>
