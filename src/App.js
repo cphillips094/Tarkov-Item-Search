@@ -18,29 +18,27 @@ const App = () => {
 	const [tradingData, setTradingData] = useState([]);
 	const [craftingData, setCraftingData] = useState([]);
 
-	const fetchItemData = value => {
-		(async () => {
-			if (value) {
-				try {
-					setMakingRequest(true);
-					const response = await fetch(`/api/search/${value.replace(/ /g, '_')}`);
-					const json = await response.json();
-					if (!response.ok) {
-						throw json.message || 'Something went wrong';
-					}
-					setQuestData(json.quest);
-					setHideoutData(json.hideout);
-					setTradingData(json.trading);
-					setCraftingData(json.crafting);
-				} catch (error) {
-					message.error(error, 10);
-				} finally {
-					setRequestMade(true);
-					setMakingRequest(false);
+	const fetchItemData = async value => {
+		if (value) {
+			try {
+				setMakingRequest(true);
+				const response = await fetch(`/api/search/${value.replace(/ /g, '_')}`);
+				const json = await response.json();
+				if (!response.ok) {
+					throw json.message || 'Something went wrong';
 				}
+				setQuestData(json.quest);
+				setHideoutData(json.hideout);
+				setTradingData(json.trading);
+				setCraftingData(json.crafting);
+			} catch (error) {
+				message.error(error, 10);
+			} finally {
+				setRequestMade(true);
+				setMakingRequest(false);
 			}
-		})()
-	}
+		}
+	};
 
 	const handleChange = value => {
 		setItemName(value);
