@@ -8,7 +8,7 @@ const ItemSearchInput = (props) => {
 	const fetchItemList = async () => {
 		try {
 			setFetchingItems(true);
-			const response = await fetch('/api/search');
+			const response = await fetch('/api/search/all');
 			const json = await response.json();
 			if (!response.ok) {
 				throw json.message || 'Something went wrong';

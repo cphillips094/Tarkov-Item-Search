@@ -4,7 +4,7 @@ const wikiScraperService = require('./wikiScraperService');
 
 const app = express();
 
-app.get('/api/search', asyncHandler(async (req, res) => {
+app.get('/api/search/all', asyncHandler(async (req, res) => {
 	res.setHeader('Content-Type', 'application/json');
 	const homepageRequestResult = await wikiScraperService.makeRequest('Escape_from_Tarkov_Wiki');
 	const homepageHtml = homepageRequestResult.data;
