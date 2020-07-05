@@ -23,7 +23,7 @@
 		"dev-server": "nodemon --inspect server --exec nodemon",
 		"dev": "run-p dev-server start",
 		"prod": "node server/index.js",
-		"build": "react-scripts build",
+		"build": "NODE_ENV=production react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"
 	},
