@@ -1,8 +1,15 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
+const path = require('path');
 const wikiScraperService = require('./wikiScraperService');
 
 const app = express();
+
+app.use(express.static('build'));
+
+app.get('/', (req, res) => {
+	res.sendFile(path.join(__dirname, 'build', 'index.html'))
+});
 
 app.get('/api/search/all', asyncHandler(async (req, res) => {
 	res.setHeader('Content-Type', 'application/json');
