@@ -22,7 +22,8 @@ app.get('/api/search/all', asyncHandler(async (req, res) => {
 
 app.get('/api/search/:item', asyncHandler(async (req, res) => {
 	res.setHeader('Content-Type', 'application/json');
-	const itemPageResponse = await wikiScraperService.makeRequest(req.params.item);
+	const item = Buffer.from(req.params.item, 'base64').toString('ascii').replace(/ /g, '_');
+	const itemPageResponse = await wikiScraperService.makeRequest(item);
 	const itemPageHTML = itemPageResponse.data;
 	const itemData = wikiScraperService.processItemHTML(itemPageHTML);
 	res.status(200).send(itemData);

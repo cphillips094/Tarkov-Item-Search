@@ -22,7 +22,7 @@ const App = () => {
 		if (value) {
 			try {
 				setMakingRequest(true);
-				const response = await fetch(`/api/search/${value.replace(/ /g, '_')}`);
+				const response = await fetch(`/api/search/${new Buffer(value).toString('base64')}`);
 				const json = await response.json();
 				if (!response.ok) {
 					throw json.message || 'Something went wrong';
