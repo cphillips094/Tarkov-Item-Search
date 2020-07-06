@@ -22,6 +22,7 @@ const ItemSearchInput = (props) => {
 				filterOption={ filterFunction }
 				onSelect={ handleSearch }
 				onChange={ handleChange }
+				open={ itemName.length > 0 }
 			>
 				<Input.Search
 					size='large'
