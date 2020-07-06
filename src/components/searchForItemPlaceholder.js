@@ -6,9 +6,11 @@ import { SearchOutlined } from '@ant-design/icons';
 const SearchForItemPlaceholder = () => {
 	return (
 		<InformationTextContainer>
-			<Typography.Text type="secondary">
-				<SearchOutlined /> Search for an item to get data
-			</Typography.Text>
+			<Typography.Title level={ 4 }>
+				<Typography.Text type="secondary">
+					<SearchOutlined /> Search for an item to get data
+				</Typography.Text>
+			</Typography.Title>
 		</InformationTextContainer>
 	);
 }

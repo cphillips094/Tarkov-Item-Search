@@ -6,9 +6,11 @@ import { LoadingOutlined } from '@ant-design/icons';
 const FetchingItemListPlaceholder = () => {
 	return (
 		<InformationTextContainer>
-			<Typography.Text type="secondary">
-				<LoadingOutlined /> Loading item list, one sec...
-			</Typography.Text>
+			<Typography.Title level={ 4 }>
+				<Typography.Text type="secondary">
+					<LoadingOutlined /> Loading item list, one sec...
+				</Typography.Text>
+			</Typography.Title>
 		</InformationTextContainer>
 	);
 }
