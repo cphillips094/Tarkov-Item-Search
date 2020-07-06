@@ -26,7 +26,7 @@ const App = () => {
 			setFetchingItems(true);
 			const response = await fetch('/api/search/all');
 			const json = await response.json();
-			if (!response.ok) {
+			if (!response.ok || json.message) {
 				throw json.message || 'Something went wrong';
 			}
 			setItemList(json.items.sort().map((item, index) => { return { key: index, value: item } }));

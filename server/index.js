@@ -35,7 +35,7 @@ app.use((error, req, res, next) => {
 		res.status(200).json({ quest: [], hideout: [], trading: [], crafting: [] });
 	} else {
 		console.error(error.stack);
-		res.status(500).send({ message: 'An error occurred' })
+		res.status(500).json({ message: 'An error occurred' })
 	}
 });
 
