@@ -1,16 +1,16 @@
 import React from 'react';
 import InformationTextContainer from './informationTextContainer'
 import { Typography } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { LoadingOutlined } from '@ant-design/icons';
 
-const SearchForItemPlaceholder = () => {
+const FetchingItemListPlaceholder = () => {
 	return (
 		<InformationTextContainer>
 			<Typography.Text type="secondary">
-				<SearchOutlined /> Search for an item to get data
+				<LoadingOutlined /> Loading item list, one sec...
 			</Typography.Text>
 		</InformationTextContainer>
 	);
 }
 
-export default SearchForItemPlaceholder;
+export default FetchingItemListPlaceholder;

@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.dark.css';
 import { Divider, Layout, Row, Col, Affix, Button, message } from 'antd';
 import ItemSearchInput from './components/itemSearchInput';
 import FavoritesDrawer from './components/favoritesDrawer';
+import FetchingItemListPlaceholder from './components/fetchingItemListPlaceholder';
 import SearchForItemPlaceholder from './components/searchForItemPlaceholder';
 import ItemData from './components/itemData';
 import { LeftOutlined  } from '@ant-design/icons';
 
 const App = () => {
+	const [fetchingItems, setFetchingItems] = useState(false);
+	const [itemList, setItemList] = useState([]);
 	const [itemName, setItemName] = useState('');
 	const [favorites, setFavorites] = useState([]);
 	const [drawerVisible, setDrawerVisible] = useState(false);
@@ -17,6 +20,24 @@ const App = () => {
 	const [hideoutData, setHideoutData] = useState([]);
 	const [tradingData, setTradingData] = useState([]);
 	const [craftingData, setCraftingData] = useState([]);
+
+	const fetchItemList = async () => {
+		try {
+			setFetchingItems(true);
+			const response = await fetch('/api/search/all');
+			const json = await response.json();
+			if (!response.ok) {
+				throw json.message || 'Something went wrong';
+			}
+			setItemList(json.items.sort().map((item, index) => { return { key: index, value: item } }));
+		} catch(error) {
+			message.error(error, 10);
+		} finally {
+			setFetchingItems(false);
+		}
+	}
+	
+	useEffect(() => { fetchItemList() }, []);
 
 	const fetchItemData = async value => {
 		if (value) {
@@ -73,6 +94,8 @@ const App = () => {
 					<Row>
 						<Col span={ 16 }>
 							<ItemSearchInput
+								fetchingItems={ fetchingItems }
+								itemList={ itemList }
 								handleSearch={ fetchItemData }
 								handleChange={ handleChange }
 								searching={ makingRequest }
@@ -103,6 +126,10 @@ const App = () => {
 					</Row>
 					<Divider/>
 					{
+						(
+							fetchingItems &&
+							<FetchingItemListPlaceholder />
+						) ||
 						(
 							requestMade &&
 							<ItemData
