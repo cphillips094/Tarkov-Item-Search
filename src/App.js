@@ -12,7 +12,7 @@ const App = () => {
 	const [fetchingItems, setFetchingItems] = useState(false);
 	const [itemList, setItemList] = useState([]);
 	const [itemName, setItemName] = useState('');
-	const [favorites, setFavorites] = useState([]);
+	const [favorites, setFavorites] = useState(JSON.parse(localStorage.getItem('favoriteItems')) || []);
 	const [drawerVisible, setDrawerVisible] = useState(false);
 	const [makingRequest, setMakingRequest] = useState(false);
 	const [requestMade, setRequestMade] = useState(false);
@@ -38,6 +38,7 @@ const App = () => {
 	}
 	
 	useEffect(() => { fetchItemList() }, []);
+	useEffect(() => localStorage.setItem('favoriteItems', JSON.stringify(favorites)));
 
 	const fetchItemData = async value => {
 		if (value) {
